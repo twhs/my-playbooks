@@ -1,0 +1,7 @@
+---
+# jenkins.yml
+- name: deploy Jenkins
+  hosts: jenkins
+  roles:
+    - role: common
+    - role: jenkins

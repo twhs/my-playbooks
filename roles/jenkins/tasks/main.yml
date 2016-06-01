@@ -1,0 +1,37 @@
+---
+# file: roles/jenkins/tasks/main.yml
+- name: install pre-required pkgs
+  become: true
+  yum: name=java-1.8.0-openjdk state=latest
+
+- name: add jenkins repository
+  become: true
+  yum_repository:
+    name: jenkins
+    description: jenkins yum repo
+    baseurl: http://pkg.jenkins-ci.org/redhat/jenkins.repo
+
+- name: import key for jenkins repo
+  become: true
+  rpm_key: state=present key=http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+
+- name: install jenkins
+  become: true
+  yum: name=jenkins state=latest
+  notify: restart jenkins
+
+- name: enable jenkins autostart
+  become: true
+  service: name=jenkins enabled=yes
+
+- name: allow jenkins port on firewalld
+  become: true
+  firewalld: port={{ jenkins_port }}/tcp permanent=true state=enabled
+
+- name: read default admin password
+  become: true
+  shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+  register: admin_pass
+
+- name: debug admin password
+  debug: var=admin_pass.stdout_lines

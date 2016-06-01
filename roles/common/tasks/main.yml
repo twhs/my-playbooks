@@ -1,0 +1,10 @@
+---
+# file: roles/common/tasks/main.yml
+- name: upgrade all packages
+  become: true
+  yum: name=* state=latest  
+
+- name: install require pkgs
+  become: true
+  yum: name={{ item }} state=latest
+  with_items: "{{ default_pkgs }}"

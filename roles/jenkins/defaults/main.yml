@@ -1,0 +1,3 @@
+---
+# file: roles/jenkins/defaults/main.yml
+jenkins_port: 8080

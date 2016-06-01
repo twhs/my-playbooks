@@ -1,0 +1,5 @@
+---
+# file: group_vars/jenkins
+default_pkgs:
+    - git
+    - wget
